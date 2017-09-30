@@ -1,0 +1,18 @@
+%{
+#include "hpp.hpp"
+%}
+%option noyywrap yylineno
+N	[0-9]+
+%%
+#[^\n]*			{}						// drop comment
+
+\'.*\'			TOC(Str,STR)			// string
+
+[\+\*\=\[\]]	TOC(Op,OP)				// operator
+
+{N}\.{N}		TOC(Num,NUM)			// number
+
+[a-zA-Z0-9_]+	TOC(Sym,SYM)			// symbol
+
+[ \t\r\n]+		{}						// drop spaces
+.				{yyerror("lexer");}		// undefined token

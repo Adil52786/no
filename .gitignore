@@ -2,3 +2,5 @@
 *.swp
 *.exe
 *.log
+ypp.tab.?pp
+lex.yy.c

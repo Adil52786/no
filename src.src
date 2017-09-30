@@ -1,1 +1,7 @@
 # comment
+
+primitives = [		# vector
+	[ sym bols ]
+	[ 1 2.3 4e5 ]	# numbers
+	'strings'
+]
