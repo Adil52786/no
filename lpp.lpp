@@ -1,8 +1,12 @@
 %{
 #include "hpp.hpp"
 %}
+
 %option noyywrap yylineno
+
+S	[\+\-]?
 N	[0-9]+
+
 %%
 #[^\n]*			{}						// drop comment
 
@@ -19,6 +23,8 @@ N	[0-9]+
 \/				TOC(Op,DIV)
 
 {N}\.{N}		TOC(Num,NUM)			// number
+{N}[eE]{S}{N}	TOC(Num,NUM)
+{N}				TOC(Num,NUM)
 
 [a-zA-Z0-9_]+	TOC(Sym,SYM)			// symbol
 

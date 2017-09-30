@@ -15,6 +15,8 @@ string Sym::dump(int depth) { string S = "\n"+pad(depth)+head();
 string Sym::head() { return tag+":"+val; }
 string Sym::pad(int n) { string S; for (int i=0;i<n;i++) S += '\t'; return S; }
 
+Sym* Sym::eval(Sym*E) { return this; }
+
 Str::Str(string V):Sym("str",V){}
 
 Num::Num(string V):Sym("num",V){}
@@ -22,3 +24,6 @@ Num::Num(string V):Sym("num",V){}
 Vector::Vector():Sym("vector","[]"){}
 
 Op::Op(string V):Sym("op",V){}
+
+Env* glob = new Env("global");
+Env::Env(string V):Sym("env",V){}

@@ -13,14 +13,18 @@ struct Sym {
 	virtual string dump(int=0);				// \ dump
 	virtual string head(); string pad(int);	// /
 	vector<Sym*> nest; void push(Sym*);		// nest[]ed elements
+	virtual Sym* eval(Sym*);				// compute/evaluate
 };
 
-struct Str:Sym { Str(string); };
-struct Num:Sym { Num(string); };
+struct Env:Sym { Env(string); };		// environment
+extern Env* glob;						// global env
 
-struct Vector:Sym { Vector(); };
+struct Str:Sym { Str(string); };		// string
+struct Num:Sym { Num(string); };		// number
 
-struct Op:Sym { Op(string); };
+struct Vector:Sym { Vector(); };		// [vec tor]
+
+struct Op:Sym { Op(string); };			// op:erator
 
 extern int yylex();				// lexer/parser interface
 extern int yylineno;
