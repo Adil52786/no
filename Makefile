@@ -3,7 +3,11 @@ CWD = $(CURDIR)
 							# module name (short directory name)
 MODULE = $(notdir $(CWD))
 							# host OS
-OS = $(shell uname -o)
+ifeq ($(shell uname -m),Windows_NT)
+	OS = win32
+else
+	OS = linux
+endif
 							# host ARCH
 ARCH = $(shell uname -m)
 
@@ -51,7 +55,11 @@ install: neo4j neo_py
 
 NEO_VER = 3.2.5
 NEO = neo4j-community-$(NEO_VER)
-NEO_GZ = $(NEO)-windows.zip
+ifeq ($(OS),win32)
+	NEO_GZ = $(NEO)-windows.zip
+else
+	NEO_GZ = $(NEO)-unix.tar.gz
+endif
 NEO_BIN = $(NEO)\bin\neo4j
 NEO_SH  = $(NEO)\bin\neo4j-shell
 NEO_DB  = $(NEO)\data\databases\graph.db
