@@ -7,3 +7,6 @@ primitives = [		# vector
 ]
 
 composites = [ vector ]
+
+-01
+++2.3*4e-05		# test calculator

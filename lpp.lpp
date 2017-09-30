@@ -13,9 +13,15 @@ N	[0-9]+
 
 \=				TOC(Op,EQ)				// operators
 
+\+				TOC(Op,ADD)
+\-				TOC(Op,SUB)
+\*				TOC(Op,MUL)
+\/				TOC(Op,DIV)
+
 {N}\.{N}		TOC(Num,NUM)			// number
 
 [a-zA-Z0-9_]+	TOC(Sym,SYM)			// symbol
 
-[ \t\r\n]+		{}						// drop spaces
+\n				{return EOL;}			// end of line marks statement end
+[ \t\r]+		{}						// drop spaces
 .				{yyerror("lexer");}		// undefined token

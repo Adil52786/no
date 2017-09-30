@@ -2,16 +2,33 @@
 #include "hpp.hpp"
 %}
 %defines %union { Sym*o; }
-%token <o> SYM NUM STR	// symbol number string
-%token <o> LQ RQ		// brackets: []
-%token <o> EQ			// operators: =
+%token <o> SYM NUM STR		// symbol number string
+%token <o> LQ RQ			// brackets: []
+%token <o> ADD SUB MUL DIV	// operators: + - * /
+%token <o> EQ				// operators: =
 %type <o> ex vector
+%token EOL
+
+%right EQ
+%left ADD SUB
+%left MUL DIV
+%left PFX
 %%
-REPL : | REPL ex { cout << $2->dump() << endl; }
+REPL : | REPL EOL | REPL ex { cout << $2->dump() << endl; }
+
 ex : SYM
 ex : NUM
 ex : STR
-ex : ex EQ ex		{ $$=$2; $$->push($1); $$->push($3); }
-ex : LQ vector RQ	{ $$=$2; }
-vector : 			{ $$=new Vector(); }
-vector : vector ex	{ $$=$1; $$->push($2); }
+
+ex : ADD ex %prec PFX	{ $$=$1; $$->push($2); }
+ex : SUB ex %prec PFX	{ $$=$1; $$->push($2); }
+ex : ex ADD ex			{ $$=$2; $$->push($1); $$->push($3); }
+ex : ex SUB ex			{ $$=$2; $$->push($1); $$->push($3); }
+ex : ex MUL ex			{ $$=$2; $$->push($1); $$->push($3); }
+ex : ex DIV ex			{ $$=$2; $$->push($1); $$->push($3); }
+ex : ex EQ ex			{ $$=$2; $$->push($1); $$->push($3); }
+
+ex : LQ vector RQ		{ $$=$2; }
+vector : 				{ $$=new Vector(); }
+vector : vector EOL		{ $$=$1; }					// vectors can be multilined
+vector : vector ex		{ $$=$1; $$->push($2); }
