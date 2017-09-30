@@ -18,6 +18,8 @@ REPL : | REPL EOL | REPL ex {
 						cout << $2->dump() << endl;
 						cout << "------------------------";
 						cout << $2->eval(glob)->dump() << endl ;
+						cout << "------------------------";
+						cout << glob->dump() << endl;
 						cout << "==================================" << endl; }
 
 ex : SYM
