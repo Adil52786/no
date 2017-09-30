@@ -7,14 +7,14 @@ OS = $(shell uname -o)
 							# host ARCH
 ARCH = $(shell uname -m)
 
-							# dir for external program source archives
-GZ = $(CWD)/gz
 							# temp dir
 TMP = $(CWD)/tmp
+							# dir for external program source archives
+GZ = $(CWD)/gz
+WGET = wget --no-check-certificate -c -P $(GZ)
 
 .PHONY: default
 default: neo4j
-	echo $(OS),$(ARCH),$(CWD)
 
 # Interpreter core
 
@@ -43,23 +43,32 @@ manual: doc/manual.pdf
 doc/manual.pdf:
 	cd doc ; $(MAKE)
 	
+# full system rollup
+.PHONY: install
+install: neo4j neo_py
+	
 # neo4j & knowledge database kernel rollup
 
-WGET = wget --no-check-certificate -c -P $(GZ)
+NEO_VER = 3.2.5
+NEO = neo4j-community-$(NEO_VER)
+NEO_GZ = $(NEO)-windows.zip
+NEO_BIN = $(NEO)\bin\neo4j
+NEO_SH  = $(NEO)\bin\neo4j-shell
+NEO_DB  = $(NEO)\data\databases\graph.db
 
-NEO4J_VER = 3.2.5
-NEO4J = neo4j-community-$(NEO4J_VER)
-NEO4J_GZ = $(NEO4J)-windows.zip
-NEO4J_BIN = $(NEO4J)\bin\neo4j
-
-.PHONY: neo4j
-neo4j: $(NEO4J)/README.txt
-$(NEO4J)/README.txt: $(GZ)/$(NEO4J_GZ)
+.PHONY: neo4j neo_py
+neo4j: $(NEO)/README.txt
+$(NEO)/README.txt: $(GZ)/$(NEO_GZ)
 	unzip $< && touch $@
-$(GZ)/$(NEO4J_GZ):
-	$(WGET) -O $@ https://neo4j.com/artifact.php?name=$(NEO4J_GZ)
+$(GZ)/$(NEO_GZ):
+	$(WGET) -O $@ https://neo4j.com/artifact.php?name=$(NEO_GZ)
+neo_py:
+	pip install neo4j-driver
 
 # run server system
 .PHONY: run
 run: neo4j
-	$(NEO4J_BIN) console
+	$(NEO_BIN) console
+.PHONY: dump
+dump: neo4j
+	$(NEO_SH) -path $(NEO_DB) -c dump  
