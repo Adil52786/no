@@ -1,5 +1,5 @@
 .PHONY: default
-default: manual
+default: log.log
 
 # Interpreter core
 
