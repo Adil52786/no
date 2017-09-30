@@ -1,0 +1,42 @@
+% ebook in PDF
+\documentclass[a4paper,oneside,12pt]{book}
+\usepackage[unicode,colorlinks=true]{hyperref}
+%% mobile phone optimized
+\usepackage[paperwidth=210mm,paperheight=145mm,margin=2mm]{geometry}
+%% colors
+\usepackage{xcolor}
+\definecolor{red}{rgb}{0.7,0,0}
+\definecolor{green}{rgb}{0,0.6,0}
+\definecolor{blue}{rgb}{0,0,0.7}
+\definecolor{cyan}{rgb}{0,0.6,0.6}
+\definecolor{magenta}{rgb}{0.7,0,0.7}
+
+% relative sectioning
+\usepackage{ifthen}
+\newcounter{secdepth}\setcounter{secdepth}{0}
+\newcommand{\secup}{\addtocounter{secdepth}{1}}
+\newcommand{\secdown}{\addtocounter{secdepth}{-1}}
+\newcommand{\secrel}[1]{
+\ifthenelse{\equal{\value{secdepth}}{0}}{\part{#1}}{}
+\ifthenelse{\equal{\value{secdepth}}{-1}}{\chapter{#1}}{}
+\ifthenelse{\equal{\value{secdepth}}{-2}}{\section{#1}}{}
+\ifthenelse{\equal{\value{secdepth}}{-3}}{\subsection{#1}}{}
+\ifthenelse{\equal{\value{secdepth}}{-4}}{\subsubsection{#1}}{}
+}
+\newcommand{\secly}[1]{
+\section*{#1}
+\addcontentsline{toc}{section}{#1}
+}
+
+% [nosep] option in lists/enums
+\usepackage{enumitem}
+% frame box
+\usepackage{framed}
+% indexing
+\usepackage{makeidx}\makeindex
+
+% misc
+\newcommand{\note}[1]{\,\footnote{\ #1}}
+\renewcommand{\emph}[1]{\textcolor{red}{#1}}
+\newcommand{\email}[1]{$<$\href{mailto:#1}{#1}$>$}
+\newcommand{\term}[1]{\textcolor{green}{\textbf{#1}}\index{#1}}
