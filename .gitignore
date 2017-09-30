@@ -7,4 +7,5 @@ lex.yy.c
 wiki/
 gz/
 tmp/
+neo4j-community-*/
 
