@@ -1,3 +1,5 @@
+# Interpreter core
+
 log.log: src.src ./$(OS).exe
 	./$(OS).exe < $< > $@ && tail $(TAIL) $@
 C = cpp.cpp ypp.tab.cpp lex.yy.c
@@ -10,3 +12,9 @@ ypp.tab.cpp: ypp.ypp
 	bison $<
 lex.yy.c: lpp.lpp
 	flex $<
+
+# pull github
+.PHONY: pull
+pull:
+	git pull &
+	cd wiki ; git pull &
