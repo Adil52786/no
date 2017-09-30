@@ -8,7 +8,7 @@ ifeq ($(shell uname -m),Windows_NT)
 else
 	OS = linux
 endif
-							# host ARCH
+							# host ARCHitecture
 ARCH = $(shell uname -m)
 
 							# temp dir
@@ -57,21 +57,31 @@ NEO_VER = 3.2.5
 NEO = neo4j-community-$(NEO_VER)
 ifeq ($(OS),win32)
 	NEO_GZ = $(NEO)-windows.zip
+	NEO_BIN = $(NEO)/bin/neo4j.bat
+	NEO_SH  = $(NEO)/bin/neo4j-shell.bat
 else
 	NEO_GZ = $(NEO)-unix.tar.gz
+	NEO_BIN = $(NEO)/bin/neo4j
+	NEO_SH  = $(NEO)/bin/neo4j-shell
 endif
-NEO_BIN = $(NEO)\bin\neo4j
-NEO_SH  = $(NEO)\bin\neo4j-shell
-NEO_DB  = $(NEO)\data\databases\graph.db
+NEO_DB  = $(NEO)/data/databases/graph.db
 
 .PHONY: neo4j neo_py
 neo4j: $(NEO)/README.txt
 $(NEO)/README.txt: $(GZ)/$(NEO_GZ)
-	unzip $< && touch $@
+ifeq ($(OS),"win32")
+		unzip $< && touch $@
+else
+		tar zx < $< && touch $@
+endif
 $(GZ)/$(NEO_GZ):
 	$(WGET) -O $@ https://neo4j.com/artifact.php?name=$(NEO_GZ)
 neo_py:
+ifeq ($(OS),win32)
 	pip install neo4j-driver
+else
+	sudo pip install neo4j-driver
+endif
 
 # run server system
 .PHONY: run
@@ -79,4 +89,4 @@ run: neo4j
 	$(NEO_BIN) console
 .PHONY: dump
 dump: neo4j
-	$(NEO_SH) -path $(NEO_DB) -c dump  
+	$(NEO_SH) -path $(NEO_DB) -c dump > KB.dump.cql
