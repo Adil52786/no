@@ -1,3 +1,6 @@
+.PHONY: default
+default: manual
+
 # Interpreter core
 
 log.log: src.src ./$(OS).exe
@@ -18,3 +21,9 @@ lex.yy.c: lpp.lpp
 pull:
 	git pull &
 	cd wiki ; git pull &
+
+# LaTeX manual
+.PHONY: manual
+manual: doc/manual.pdf
+doc/manual.pdf:
+	cd doc ; $(MAKE)
