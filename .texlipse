@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Sat Sep 30 14:56:00 GST 2017
+markTmpDer=true
+builderNum=2
+outputDir=doc/
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=manual.tex
+outputFile=manual.pdf
+langSpell=
+markDer=true
+srcDir=doc/
