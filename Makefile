@@ -1,4 +1,5 @@
 log.log: src.src ./$(OS).exe
+	./$(OS).exe < $< > $@ && tail $(TAIL) $@
 C = cpp.cpp
 H = hpp.hpp
 L =
