@@ -5,7 +5,9 @@ TEX += platform/knowledge.tex
 LATEX = pdflatex -halt-on-error -output-directory ../tmp
 
 manual.pdf: $(TEX)
-	$(LATEX) $< && $(LATEX) $<
+	$(LATEX) $<
+	cd ../tmp ; makeindex manual ; cd ../doc
+	$(LATEX) $<
 	
 files:
 	touch $(TEX)
