@@ -5,3 +5,5 @@ primitives = [		# vector
 	[ 1 2.3 4e5 ]	# numbers
 	'strings'
 ]
+
+composites = [ vector ]

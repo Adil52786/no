@@ -8,7 +8,10 @@ N	[0-9]+
 
 \'.*\'			TOC(Str,STR)			// string
 
-[\+\*\=\[\]]	TOC(Op,OP)				// operator
+\[				TOC(Op,LQ)				// brackets
+\]				TOC(Op,RQ)
+
+\=				TOC(Op,EQ)				// operators
 
 {N}\.{N}		TOC(Num,NUM)			// number
 

@@ -3,11 +3,15 @@
 %}
 %defines %union { Sym*o; }
 %token <o> SYM NUM STR	// symbol number string
-%token <o> OP			// operator
-%type <o> ex
+%token <o> LQ RQ		// brackets: []
+%token <o> EQ			// operators: =
+%type <o> ex vector
 %%
 REPL : | REPL ex { cout << $2->dump() << endl; }
 ex : SYM
 ex : NUM
 ex : STR
-ex : OP
+ex : ex EQ ex		{ $$=$2; $$->push($1); $$->push($3); }
+ex : LQ vector RQ	{ $$=$2; }
+vector : 			{ $$=new Vector(); }
+vector : vector ex	{ $$=$1; $$->push($2); }
